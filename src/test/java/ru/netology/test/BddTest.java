@@ -1,11 +1,15 @@
-package ru.netology;
+package ru.netology.test;
 
+import com.codeborne.selenide.SelenideElement;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.netology.page.DashboardPage;
+import ru.netology.page.VerificationPage;
 
+import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static ru.netology.DataHelper.*;
+import static ru.netology.data.DataHelper.*;
 
 public class BddTest {
     DashboardPage dashboardPage;
@@ -50,4 +54,16 @@ public class BddTest {
         assertEquals(secondCardBalance, actualBalanceSecondCard);
     }
 
+    public static class LoginPage {
+        private final SelenideElement loginField = $("[data-test-id=login] input");
+        private final SelenideElement passwordField = $("[data-test-id=password] input");
+        private final SelenideElement loginButton = $("[data-test-id=action-login]");
+
+        public VerificationPage validLogin(AuthInfo info) {
+            loginField.setValue(info.getLogin());
+            passwordField.setValue(info.getPassword());
+            loginButton.click();
+            return new VerificationPage();
+        }
+    }
 }
